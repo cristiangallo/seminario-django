@@ -38,7 +38,7 @@ class Libro(models.Model):
     # Los libros se identifican mediante su ISBN, tienen un título, cantidad de páginas, uno o más autores y pertenecen
     # a un género literario.
     titulo = models.CharField(max_length=50, verbose_name="Título")
-    cantidad = models.IntegerField(default=0)
+    cant_pag = models.IntegerField(default=0, verbose_name="Cant. de páginas")
     genero = models.ForeignKey(Genero, on_delete=models.PROTECT, verbose_name="Género")
     autores = models.ManyToManyField(Autor, verbose_name="Autores", through='LibroAutor')
 
@@ -71,7 +71,7 @@ class Ejemplar(models.Model):
 
 
 class Socio(models.Model):
-    dni = models.CharField(max_length=10, unique=True)
+    dni = models.CharField(max_length=10, verbose_name="DNI", unique=True)
     nombre = models.CharField(max_length=50)
     apellido = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
@@ -90,6 +90,7 @@ class Bibliotecario(Socio):
 
 
 class Prestamo(models.Model):
+    ejemplar = models.ForeignKey(Ejemplar, on_delete=models.PROTECT)
     socio = models.ForeignKey(Socio, on_delete=models.PROTECT)
     entrego = models.ForeignKey(Bibliotecario, on_delete=models.PROTECT, related_name='entrego')
     recibio = models.ForeignKey(Bibliotecario, on_delete=models.PROTECT, related_name='recibio', null=True, blank=True)
@@ -99,6 +100,7 @@ class Prestamo(models.Model):
 
     def __str__(self):
         return "{}".format(self.id)
+
 
 # Implementamos patrón Singleton para la configuración del sistema
 # Singleton es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia,
