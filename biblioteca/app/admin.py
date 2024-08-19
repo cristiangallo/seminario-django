@@ -1,3 +1,11 @@
-from django.contrib import admin
+# -*- coding: UTF-8 -*-
 
-# Register your models here.
+from django.contrib import admin
+from singleton.admin import SingletonModelAdmin
+from .models import Configuracion
+
+
+@admin.register(Configuracion)
+class ConfiguracionAdmin(SingletonModelAdmin):
+    # Configuracion.load()
+    pass

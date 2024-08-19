@@ -103,7 +103,8 @@ class Prestamo(models.Model):
 # Implementamos patrón Singleton para la configuración del sistema
 # Singleton es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia,
 # a la vez que proporciona un punto de acceso global a dicha instancia
-class Configuracion(models.Model):
+from singleton.models import SingletonModel
+class Configuracion(SingletonModel):
     plazo_max_devolucion = models.IntegerField(
         default=3, verbose_name="Plazo máximo de devolución",
         help_text="Expresado en días"
