@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -60,3 +60,58 @@ class LibroAutor(models.Model):
 
     def __str__(self):
         return "{} {}".format(self.autor, self.libro)
+
+
+class Ejemplar(models.Model):
+    libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    nro_ejemplar = models.IntegerField(default=1)
+
+    def __str__(self):
+        return "{}-{}".format(self.nro_ejemplar, self.libro)
+
+
+class Socio(models.Model):
+    dni = models.CharField(max_length=10, unique=True)
+    nombre = models.CharField(max_length=50)
+    apellido = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    direccion = models.CharField(max_length=50)
+    telefono = models.CharField(max_length=10, null=True, blank=True)
+    celular = models.CharField(max_length=10, null=True, blank=True)
+    fecha_nacimiento = models.DateField()
+
+    def __str__(self):
+        return "{}, {}".format(self.apellido, self.nombre)
+
+
+class Bibliotecario(Socio):
+    desde = models.DateTimeField(auto_now_add=True)
+    usuario = models.OneToOneField(User, on_delete=models.PROTECT)
+
+
+class Prestamo(models.Model):
+    socio = models.ForeignKey(Socio, on_delete=models.PROTECT)
+    entrego = models.ForeignKey(Bibliotecario, on_delete=models.PROTECT, related_name='entrego')
+    recibio = models.ForeignKey(Bibliotecario, on_delete=models.PROTECT, related_name='recibio', null=True, blank=True)
+    fecha_max_dev = models.DateField(
+        verbose_name="Fecha máxima de devolución", help_text="El socio debe devolver el libro antes de esta fecha.")
+    fecha_dev = models.DateField(verbose_name="Fecha de devolución", null=True, blank=True)
+
+    def __str__(self):
+        return "{}".format(self.id)
+
+# Implementamos patrón Singleton para la configuración del sistema
+# Singleton es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia,
+# a la vez que proporciona un punto de acceso global a dicha instancia
+class Configuracion(models.Model):
+    plazo_max_devolucion = models.IntegerField(
+        default=3, verbose_name="Plazo máximo de devolución",
+        help_text="Expresado en días"
+    )
+    cant_max_prest_act = models.IntegerField(default=3, verbose_name="Cant. máxima de préstamos activos")
+
+    class Meta:
+        verbose_name, verbose_name_plural = "Configuración", "Configuraciones"
+
+    def __str__(self):
+        return "Configuración sistema Biblioteca"
