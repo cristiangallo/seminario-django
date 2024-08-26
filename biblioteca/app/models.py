@@ -66,6 +66,10 @@ class Ejemplar(models.Model):
     libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     nro_ejemplar = models.IntegerField(default=1)
 
+    class Meta:
+        unique_together = ('libro', 'nro_ejemplar')
+        verbose_name_plural = "Ejemplares"
+
     def __str__(self):
         return "{}-{}".format(self.nro_ejemplar, self.libro)
 
@@ -95,18 +99,23 @@ class Prestamo(models.Model):
     entrego = models.ForeignKey(Bibliotecario, on_delete=models.PROTECT, related_name='entrego')
     recibio = models.ForeignKey(Bibliotecario, on_delete=models.PROTECT, related_name='recibio', null=True, blank=True)
     fecha_max_dev = models.DateField(
-        verbose_name="Fecha máxima de devolución", help_text="El socio debe devolver el libro antes de esta fecha.")
+        verbose_name="Fecha máxima de devolución", help_text="El socio debe devolver el libro antes de esta fecha.",
+        editable=False
+    )
     fecha_dev = models.DateField(verbose_name="Fecha de devolución", null=True, blank=True)
+
+    class Meta:
+        verbose_name, verbose_name_plural = "Préstamo", "Préstamos"
 
     def __str__(self):
         return "{}".format(self.id)
 
 
-class PrestamoPendiente(Prestamo):
-
-    class Meta:
-        proxy = True
-
+# class PrestamoPendiente(Prestamo):
+#
+#     class Meta:
+#         proxy = True
+#         verbose_name, verbose_name_plural = "Préstamo pendiente", "Préstamos"
 
 # Implementamos patrón Singleton para la configuración del sistema
 # Singleton es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia,
