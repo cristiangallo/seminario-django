@@ -80,8 +80,8 @@ class Socio(models.Model):
     apellido = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
     direccion = models.CharField(max_length=50)
-    telefono = models.CharField(max_length=10, null=True, blank=True)
-    celular = models.CharField(max_length=10, null=True, blank=True)
+    celular = models.CharField(max_length=20, null=True, blank=True)
+    telefono = models.CharField(max_length=20, null=True, blank=True)
     fecha_nacimiento = models.DateField()
 
     def __str__(self):
@@ -102,7 +102,7 @@ class Prestamo(models.Model):
         verbose_name="Fecha máxima de devolución", help_text="El socio debe devolver el libro antes de esta fecha.",
         editable=False
     )
-    fecha_dev = models.DateField(verbose_name="Fecha de devolución", null=True, blank=True)
+    fecha_dev = models.DateField(verbose_name="Fecha de devolución", null=True, blank=True, editable=False)
 
     class Meta:
         verbose_name, verbose_name_plural = "Préstamo", "Préstamos"
@@ -110,6 +110,21 @@ class Prestamo(models.Model):
     def __str__(self):
         return "{}".format(self.id)
 
+    def save(self, *args, **kwargs):
+        from datetime import date, timedelta
+        hoy = date.today()
+        if not self.fecha_max_dev:
+            configuracion = Configuracion().load()
+            fecha_maxima_devolucion = hoy + timedelta(days=configuracion.plazo_max_devolucion)
+            self.fecha_max_dev = fecha_maxima_devolucion
+        if self.recibio and not self.fecha_dev:
+            self.fecha_dev = hoy
+        super(Prestamo, self).save(*args, **kwargs)
+
+
+class PrestamoPendiente(Prestamo):
+    class Meta:
+        proxy = True
 
 # Implementamos patrón Singleton para la configuración del sistema
 # Singleton es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia,

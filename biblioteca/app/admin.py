@@ -3,8 +3,10 @@
 from django.contrib import admin
 from singleton.admin import SingletonModelAdmin
 from .models import (
-    Configuracion, Libro, Autor, Genero, Socio, Bibliotecario, Prestamo, LibroAutor)
+    Configuracion, Libro, Autor, Genero, Socio, Bibliotecario, Prestamo, LibroAutor, Ejemplar, PrestamoPendiente)
 
+
+admin.site.register(Ejemplar)
 
 @admin.register(Configuracion)
 class ConfiguracionAdmin(SingletonModelAdmin):
@@ -31,15 +33,23 @@ class AutorAdmin(admin.ModelAdmin):
 class GeneroAdmin(admin.ModelAdmin):
     pass
 
-admin.site.register(Socio)
+@admin.register(Socio)
+class SocioAdmin(admin.ModelAdmin):
+    from .forms import SocioForm
+    form = SocioForm
+
 
 admin.site.register(Bibliotecario)
 
-admin.site.register(Prestamo)
+
+@admin.register(Prestamo)
+class PrestamoAdmin(admin.ModelAdmin):
+    list_display = ["id", "socio", "ejemplar", "entrego", "recibio", "fecha_max_dev", "fecha_dev"]
 
 
 @admin.register(PrestamoPendiente)
-class PrestamoPendienteAdmin(admin.ModelAdmin):
+class PrestamoPendienteAdmin(PrestamoAdmin):
+    search_fields = ('socio__dni__startswith',)
+
     def get_queryset(self, request):
-        # un libro no está devuelto cuando no tiene fecha de devolución
-        return super().get_queryset(request).filter(fecha_dev__isnull=True)
+        return super(PrestamoPendienteAdmin, self).get_queryset(request).filter(recibio__isnull=True)
