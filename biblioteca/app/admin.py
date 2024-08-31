@@ -24,6 +24,7 @@ class LibroAdmin(admin.ModelAdmin):
     # filter_horizontal = ('autores',)
     inlines = [LibroAutorInline]
 
+
 @admin.register(Autor)
 class AutorAdmin(admin.ModelAdmin):
     pass
