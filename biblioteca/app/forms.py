@@ -36,3 +36,28 @@ class SocioForm(forms.ModelForm):
                 raise forms.ValidationError('El celular ingresado no es válido.')
 
         return celular
+
+
+class BuscadorForm(forms.Form):
+    libro = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': "Nombre del libro*",
+                'required': "required",
+                # 'data-validation-required-message': "Please enter your name."
+            }))
+    nro_doc_socio = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': "DNI socio*",
+                'required': "required",
+                # 'data-validation-required-message': "Please enter your name."
+            }))
+
+    def __init__(self, *args, **kwargs):
+        super(BuscadorForm, self).__init__(*args, **kwargs)
+
+
+

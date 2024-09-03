@@ -22,6 +22,7 @@ from django.contrib.auth.views import (
     LogoutView, LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordChangeDoneView,
     PasswordResetCompleteView, PasswordChangeView)
 from django.views.generic import TemplateView
+from app.views import buscador
 
 from app.views import home
 urlpatterns = [
@@ -29,11 +30,13 @@ urlpatterns = [
 
     path('', home, name='home'),
 
-    # path('base', TemplateView.as_view(template_name="app/base.html"), name='base'),
+    path('base', TemplateView.as_view(template_name="app/base.html"), name='base'),
+
+    path('libros-prestados', buscador, name='base'),
     #
-    # path('login', LoginView.as_view(template_name="app/login_register.html", next_page="/"), name='login'),
+    path('login', LoginView.as_view(template_name="app/login_register.html", next_page="/"), name='login'),
     #
-    # path('logout', LogoutView.as_view(next_page="/"), name='logout'),
+    path('logout', LogoutView.as_view(next_page="/"), name='logout'),
     #
     # path('olvide-mi-password', PasswordResetView.as_view(), name="password_reset"),
 

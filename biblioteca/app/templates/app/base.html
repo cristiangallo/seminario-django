@@ -53,20 +53,19 @@
               <li><a href="/#totop">Libros Prestados</a></li>
               <li><a href="/#totop">Prestar Libro</a></li>
               <li><a href="/#totop">Devolver Libro</a></li>
-{#                {% if user.is_authenticated %}#}
-{#                <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Bienvenido {{ user }}</a>#}
-{#                <ul class="dropdown-menu">#}
-{#                   <li>#}
-{#                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">#}
-{#                            {% csrf_token %}#}
-{#                        </form>#}
-{#                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">#}
-{#                            Cerrar sesión#}
-{#                        </a>#}
-{#                    </li>#}
-{#                </ul>#}
-{#                    {% endif %}#}
-              </li>
+                {% if user.is_authenticated %}
+               <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Bienvenido {{ user }}</a>
+                <ul class="dropdown-menu">
+                   <li>
+                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                           {% csrf_token %}
+                       </form>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Cerrar sesión
+                       </a>
+                    </li>
+                </ul>
+                   {% endif %}             </li>
             </ul>
           </div>
         </div>
@@ -120,19 +119,7 @@
         </section>
         {% endblock %}
         <hr class="divider-d">
-        <footer class="footer bg-dark">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-6">
-                <p class="copyright font-alt">&copy; 2017&nbsp;<a href="{% url 'home' %}">BIBLIOTECA</a>, All Rights Reserved</p>
-              </div>
-              <div class="col-sm-6">
-                <div class="footer-social-links"><a href="#"><i class="fa fa-facebook"></i></a><a href="#"><i class="fa fa-twitter"></i></a><a href="#"><i class="fa fa-dribbble"></i></a><a href="#"><i class="fa fa-skype"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
+        {% include "app/footer.html" %}
       </div>
       <div class="scroll-up"><a href="#totop"><i class="fa fa-angle-double-up"></i></a></div>
     </main>

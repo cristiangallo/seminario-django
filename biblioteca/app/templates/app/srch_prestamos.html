@@ -1,0 +1,36 @@
+{% extends 'app/base.html' %}
+{% block main %}
+        <section class="module">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-3">
+                <h4 class="font-alt">Buscador de ...</h4><br/>
+                <form id="buscadorLibros" role="form" method="get" action="">
+                        {% csrf_token %}
+                  <div class="form-group">
+                    <label class="sr-only" for="libro">Nombre del libro</label>
+                    {{ form.libro }}
+                  </div>
+                  <div class="form-group">
+                    <label class="sr-only" for="nro_doc_socio">DNI </label>
+                    {{ form.nro_doc_socio }}
+                  </div>
+                  <div class="text-center">
+                    <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Buscar</button>
+                  </div>
+                </form>
+                <div class="ajax-response font-alt" id="contactFormResponse"></div>
+              </div>
+              <div class="col-sm-9">
+                <h4 class="font-alt">Resultado búsqueda</h4><br/>
+                <p>{{ libros.count }} libros encontrados</p>
+                <ul>
+                {% for libro in libros %}
+                    <li>{{ libro }}</li>
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+{% endblock %}
