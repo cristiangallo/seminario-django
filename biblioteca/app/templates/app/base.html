@@ -53,7 +53,20 @@
               <li><a href="/#totop">Libros Prestados</a></li>
               <li><a href="/#totop">Prestar Libro</a></li>
               <li><a href="/#totop">Devolver Libro</a></li>
-
+{#                {% if user.is_authenticated %}#}
+{#                <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Bienvenido {{ user }}</a>#}
+{#                <ul class="dropdown-menu">#}
+{#                   <li>#}
+{#                        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">#}
+{#                            {% csrf_token %}#}
+{#                        </form>#}
+{#                        <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">#}
+{#                            Cerrar sesión#}
+{#                        </a>#}
+{#                    </li>#}
+{#                </ul>#}
+{#                    {% endif %}#}
+              </li>
             </ul>
           </div>
         </div>

@@ -35,10 +35,8 @@ urlpatterns = [
     #
     # path('logout', LogoutView.as_view(next_page="/"), name='logout'),
     #
-    # path('olvide-mi-password', PasswordResetView.as_view(
-    #   html_email_template_name='licencias/mails/password_reset_email.html',
-    #   template_name="auth/password_reset_form.html"), name="password_reset"),
-    #
+    # path('olvide-mi-password', PasswordResetView.as_view(), name="password_reset"),
+
     # path('olvide-mi-password/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
     #   template_name='auth/password_reset_confirm.html'), name="password_reset_confirm"),
     #
