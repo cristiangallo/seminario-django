@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Socio
+from .models import Socio, Libro
 
 
 class SocioForm(forms.ModelForm):
@@ -52,12 +52,15 @@ class BuscadorForm(forms.Form):
             attrs={
                 'class': 'form-control',
                 'placeholder': "DNI socio*",
-                'required': "required",
+                # 'required': "required",
                 # 'data-validation-required-message': "Please enter your name."
             }))
 
-    def __init__(self, *args, **kwargs):
-        super(BuscadorForm, self).__init__(*args, **kwargs)
+    def buscar_libros(self):
+        texto = self.cleaned_data.get("libro")
+        nro_doc_socio = self.cleaned_data.get("nro_doc_socio")
+        resultado_busqueda = Libro.objects.filter(titulo__icontains=texto)
 
+        return resultado_busqueda
 
 

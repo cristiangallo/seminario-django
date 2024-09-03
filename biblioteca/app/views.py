@@ -10,13 +10,17 @@ def home(request):
     args = {'socios': Socio.objects.all()}
     return render(request, "app/index.html", args)
 
+
 @login_required(login_url="login")
 def buscador(request):
+    args = {}
     from .forms import BuscadorForm
-
-    form = BuscadorForm(request.GET)
-    nombre_libro = request.GET.get('libro')
-    libros = Libro.objects.filter(titulo__icontains=nombre_libro)
-    args = {'libros': libros, 'form': form}
+    if request.method == "POST":
+        form = BuscadorForm(request.POST)
+        if form.is_valid():
+            args.update({'libros': form.buscar_libros(), 'form': form})
+    else:
+        form = BuscadorForm(request.GET)
+    args.update({'form': form})
 
     return render(request, "app/srch_prestamos.html", args)
