@@ -1,13 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>SOcios</h1>
-    {% for socio in socios %}
-    <p>{{ socio }}</p>
-    {% endfor %}
-</body>
-</html>
+{% extends "app/base.html" %}
+
+{% block main %}
+    <section class="module">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3">
+                <h4 class="font-alt">Buscador de ...</h4><br/>
+                <form id="contactForm" role="form" method="post" action="">
+                <div class="form-group">
+                <label class="sr-only" for="name">Name</label>
+                <input class="form-control" type="text" id="name" name="name" placeholder="Your Name*" required="required" data-validation-required-message="Please enter your name."/>
+{#                <p class="help-block text-danger">corrija el error indicado</p>#}
+                </div>
+                <div class="form-group">
+                <label class="sr-only" for="email">Email</label>
+                <input class="form-control" type="email" id="email" name="email" placeholder="Your Email*" required="required" data-validation-required-message="Please enter your email address."/>
+{#                <p class="help-block text-danger">corrija el error indicado</p>#}
+                </div>
+                <div class="text-center">
+                <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Buscar</button>
+                </div>
+                </form>
+                <div class="ajax-response font-alt" id="contactFormResponse"></div>
+                </div>
+                <div class="col-sm-9">
+                <h4 class="font-alt">Additional info</h4><br/>
+                <p>I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend.</p>
+                <hr/>
+                <h4 class="font-alt">Business Hours</h4><br/>
+                <ul class="list-unstyled">
+                <li>Mo - Fr: 8am to 6pm</li>
+                <li>Sa, Su: 10am to 2pm</li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

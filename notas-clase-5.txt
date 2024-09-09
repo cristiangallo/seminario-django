@@ -1,0 +1,15 @@
+Obtener URLs del Admin:
+https://docs.djangoproject.com/en/5.1/topics/http/urls/#term-instance-namespace
+
+<li><a href="{% url 'admin:index' %}">Administrador</a></li>
+
+Corregir urls del menú
+<li><a href="/#totop">Home</a></li>
+<li><a href="/#totop">Libros Prestados</a></li>
+<li><a href="/#totop">Prestar Libro</a></li>
+<li><a href="/#totop">Devolver Libro</a></li>
+
+Buscador de libros
+
+Imagen portada libro
+
