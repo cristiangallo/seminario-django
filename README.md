@@ -2,6 +2,8 @@
 Seminario sobre el framework Django dictado en la Universidad Austral
 
 
+Descargar el template base desde:
+https://themewagon.com/themes/titan/
 
 
 Material para continuar aprendiendo:
