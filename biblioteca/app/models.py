@@ -1,6 +1,10 @@
 # -*- coding: UTF-8 -*-
+from venv import create
+
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 
 
 # app.models.py
@@ -74,6 +78,19 @@ class Ejemplar(models.Model):
         return "{}-{}".format(self.nro_ejemplar, self.libro)
 
 
+# @receiver(post_delete, sender=Ejemplar)
+# @receiver(post_save, sender=Ejemplar)
+# def cant_ejemp_disp(sender, instance, **kwargs):
+#     """
+#     Actualizo la cantidad de ejemplares disponibles
+#     :param sender:
+#     :param instance:
+#     :param kwargs:
+#     :return:
+#     """
+#     pass
+
+
 class Socio(models.Model):
     dni = models.CharField(max_length=10, verbose_name="DNI", unique=True)
     nombre = models.CharField(max_length=50)
@@ -122,9 +139,22 @@ class Prestamo(models.Model):
         super(Prestamo, self).save(*args, **kwargs)
 
 
+# @receiver(post_save, sender=Prestamo)
+# def cant_ejemp_disp(sender, instance, **kwargs):
+#     """
+#     Actualizo la cantidad de ejemplares disponibles
+#     :param sender:
+#     :param instance:
+#     :param kwargs:
+#     :return:
+#     """
+#     pass
+
+
 class PrestamoPendiente(Prestamo):
     class Meta:
         proxy = True
+
 
 # Implementamos patrón Singleton para la configuración del sistema
 # Singleton es un patrón de diseño creacional que nos permite asegurarnos de que una clase tenga una única instancia,
