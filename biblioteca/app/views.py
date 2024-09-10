@@ -6,8 +6,8 @@ from app.models import Socio, Libro
 
 @login_required(login_url="login")
 def home(request):
-
-    args = {'socios': Socio.objects.all()}
+    from .forms import BuscadorForm
+    args = {'libros': Libro.objects.all(), 'form': BuscadorForm()}
     return render(request, "app/index.html", args)
 
 

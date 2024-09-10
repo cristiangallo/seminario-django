@@ -49,13 +49,14 @@
                     </div>
                     <div class="collapse navbar-collapse" id="custom-collapse">
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#totop">Home</a></li>
-                            <li><a href="/#totop">Libros Prestados</a></li>
+                            <li><a href="{% url 'home' %}#totop">Home</a></li>
+                            <li><a href="{% url 'libros-prestados' %}">Libros Prestados</a></li>
                             <li><a href="/#totop">Prestar Libro</a></li>
                             <li><a href="/#totop">Devolver Libro</a></li>
                             {% if user.is_authenticated %}
                                 <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">Bienvenido {{ user }}</a>
                                     <ul class="dropdown-menu">
+                                        <li><a href="{% url 'admin:index' %}">Administrador</a></li>
                                         <li>
                                             <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                                                 {% csrf_token %}

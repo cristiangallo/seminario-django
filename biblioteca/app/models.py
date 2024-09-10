@@ -3,8 +3,7 @@ from venv import create
 
 from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.signals import post_save, post_delete
-from django.dispatch import receiver
+
 
 
 # app.models.py
@@ -39,12 +38,16 @@ class Genero(models.Model):
 
 
 class Libro(models.Model):
+    from sorl.thumbnail import ImageField as SorlImageField
     # Los libros se identifican mediante su ISBN, tienen un título, cantidad de páginas, uno o más autores y pertenecen
     # a un género literario.
     titulo = models.CharField(max_length=70, verbose_name="Título")
     cant_pag = models.IntegerField(default=0, verbose_name="Cant. de páginas")
+    cant_ej = models.IntegerField(default=0, verbose_name="Cant. de ejemplares", editable=True)
+    remanente = models.IntegerField(default=0, verbose_name="Ejemplares a disposición", editable=True)
     genero = models.ForeignKey(Genero, on_delete=models.PROTECT, verbose_name="Género")
     autores = models.ManyToManyField(Autor, verbose_name="Autores", through='LibroAutor')
+    portada = SorlImageField(max_length=255, null=True, blank=True, upload_to='libros/%Y')
 
     def __str__(self):
         return self.titulo
@@ -78,17 +81,32 @@ class Ejemplar(models.Model):
         return "{}-{}".format(self.nro_ejemplar, self.libro)
 
 
-# @receiver(post_delete, sender=Ejemplar)
-# @receiver(post_save, sender=Ejemplar)
-# def cant_ejemp_disp(sender, instance, **kwargs):
-#     """
-#     Actualizo la cantidad de ejemplares disponibles
-#     :param sender:
-#     :param instance:
-#     :param kwargs:
-#     :return:
-#     """
-#     pass
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
+
+@receiver(post_delete, sender=Ejemplar)
+@receiver(post_save, sender=Ejemplar)
+def cant_ejemp_disp(sender, instance, **kwargs):
+    """
+    Actualizo la cantidad de ejemplares disponibles
+    :param sender:
+    :param instance:
+    :param kwargs:
+    :return:
+    """
+    creado = kwargs.get('created', False)
+    signal = kwargs.get('signal', False)
+    if creado:
+        libro = instance.libro
+        libro.cant_ej += 1
+        libro.remanente += 1
+        super(Libro, libro).save(update_fields=['cant_ej', 'remanente'])
+    elif signal == post_delete:
+        libro = instance.libro
+        libro.cant_ej -= 1
+        libro.remanente -= 1
+        super(Libro, libro).save(update_fields=['cant_ej', 'remanente'])
+    pass
 
 
 class Socio(models.Model):
@@ -139,16 +157,26 @@ class Prestamo(models.Model):
         super(Prestamo, self).save(*args, **kwargs)
 
 
-# @receiver(post_save, sender=Prestamo)
-# def cant_ejemp_disp(sender, instance, **kwargs):
-#     """
-#     Actualizo la cantidad de ejemplares disponibles
-#     :param sender:
-#     :param instance:
-#     :param kwargs:
-#     :return:
-#     """
-#     pass
+@receiver(post_save, sender=Prestamo)
+def act_prestamo(sender, instance, **kwargs):
+    """
+    Actualizo la cantidad de ejemplares disponibles
+    :param sender:
+    :param instance:
+    :param kwargs:
+    :return:
+    """
+    creado = kwargs.get('created', False)
+    signal = kwargs.get('signal', False)
+    if creado:
+        libro = instance.ejemplar.libro
+        libro.remanente -= 1
+        super(Libro, libro).save(update_fields=['remanente'])
+    elif instance.fecha_dev:
+        libro = instance.ejemplar.libro
+        libro.remanente += 1
+        super(Libro, libro).save(update_fields=['remanente'])
+    # pass
 
 
 class PrestamoPendiente(Prestamo):

@@ -4,6 +4,7 @@ Obtener URLs del Admin:
 from django.urls import reverse
 reverse('admin:posts_post_change', args=(post.id,))
 
+https://docs.djangoproject.com/en/5.1/topics/http/urls/#reversing-namespaced-urls
 https://en.proft.me/2014/10/12/reversing-admin-urls-django/
 <li><a href="{% url 'admin:index' %}">Administrador</a></li>
 
