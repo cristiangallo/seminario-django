@@ -41,7 +41,7 @@ class Genero(models.Model):
 class Libro(models.Model):
     # Los libros se identifican mediante su ISBN, tienen un título, cantidad de páginas, uno o más autores y pertenecen
     # a un género literario.
-    titulo = models.CharField(max_length=50, verbose_name="Título")
+    titulo = models.CharField(max_length=70, verbose_name="Título")
     cant_pag = models.IntegerField(default=0, verbose_name="Cant. de páginas")
     genero = models.ForeignKey(Genero, on_delete=models.PROTECT, verbose_name="Género")
     autores = models.ManyToManyField(Autor, verbose_name="Autores", through='LibroAutor')
