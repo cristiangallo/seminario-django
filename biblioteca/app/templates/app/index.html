@@ -3,29 +3,29 @@
 {% load static thumbnail tipo_objeto %}
 
 {% block main %}
-        <section class="module">
-          <div class="container">
+    <section class="module">
+        <div class="container">
             <div class="row">
-              <div class="col-sm-3">
-                <h4 class="font-alt">Buscador de ...</h4><br/>
-                <form id="buscadorLibros" role="form" method="post" action="{% url 'buscador' %}">
+                <div class="col-sm-3">
+                    <h4 class="font-alt">Buscador de ...</h4><br/>
+                    <form id="buscadorLibros" role="form" method="post" action="{% url 'buscador' %}">
                         {% csrf_token %}
-                  <div class="form-group">
-                    <label class="sr-only" for="libro">Nombre del libro</label>
-                    {{ form.libro }}
-                  </div>
-                  <div class="form-group">
-                    <label class="sr-only" for="nro_doc_socio">DNI </label>
-                    {{ form.nro_doc_socio }}
-                  </div>
-                  <div class="text-center">
-                    <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Buscar</button>
-                  </div>
-                </form>
-                <div class="ajax-response font-alt" id="contactFormResponse"></div>
-              </div>
-            <div class="col-sm-9">
-                <div class="alert alert-success" role="alert"><strong>{{ libros.count }}</strong> {{ libros.first|tipo_objeto }} encontrados.</div>
+                        <div class="form-group">
+                            <label class="sr-only" for="libro">Nombre del libro</label>
+                            {{ form.libro }}
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="nro_doc_socio">DNI </label>
+                            {{ form.nro_doc_socio }}
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Buscar</button>
+                        </div>
+                    </form>
+                    <div class="ajax-response font-alt" id="contactFormResponse"></div>
+                </div>
+                <div class="col-sm-9">
+                    {{ libros|mensaje_busqueda }}
                     <h4 class="font-alt">Resultado de búsqueda</h4>
                     <hr/>
                     <div class="row">
@@ -38,48 +38,38 @@
                                         <th>Título</th>
                                         <th class="hidden-xs">Género</th>
                                         <th>Ejemplares disponibles</th>
-{#                                        <th></th>#}
+                                        {#                                        <th></th>#}
                                     </tr>
                                     {% for libro in libros %}
-                                    <tr>
-                                        <td class="">
-                                            <a href="#">
-                                                {% thumbnail libro.portada "665x750" format="PNG" crop="center" as img %}
-                                                    <img src="{{ img.url }}">
-                                                {% empty %}
-                                                    <img src="{% static 'assets/images/portada_libro.jpg' %}" alt="portada libro genérico"/>
-                                                {% endthumbnail %}
-
-                                            </a>
-                                        </td>
-                                        <td>
-                                            <h5 class="product-title font-alt">{{ libro.id }}</h5>
-                                        </td>
-                                        <td class="hidden-xs">
-                                            <h5 class="product-title font-alt">{{ libro }}</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="product-title font-alt">{{ libro.genero }}</h5>
-                                        </td>
-                                        <td>
-                                            <h5 class="product-title font-alt">{{ libro.remanente }}</h5>
-                                        </td>
-{#                                        <td class="pr-remove"><a href="#" title="Remove"><i class="fa fa-times"></i></a></td>#}
-                                    </tr>
+                                        <tr>
+                                            <td class="">
+                                                <a href="#">
+                                                    {% thumbnail libro.portada "665x750" format="PNG" crop="center" as img %}
+                                                        <img src="{{ img.url }}">
+                                                    {% empty %}
+                                                        <img src="{% static 'assets/images/portada_libro.jpg' %}" alt="portada libro genérico"/>
+                                                    {% endthumbnail %}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <h5 class="product-title font-alt">{{ libro.isbn }}</h5>
+                                            </td>
+                                            <td class="hidden-xs">
+                                                <h5 class="product-title font-alt">{{ libro }}</h5>
+                                            </td>
+                                            <td>
+                                                <h5 class="product-title font-alt">{{ libro.genero }}</h5>
+                                            </td>
+                                            <td>
+                                                <h5 class="product-title font-alt">{{ libro.remanente }}</h5>
+                                            </td>
+                                            {#  <td class="pr-remove"><a href="#" title="Remove"><i class="fa fa-times"></i></a></td>#}
+                                        </tr>
                                     {% endfor %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-9">
-                    <h4 class="font-alt">Resultado búsqueda</h4><br/>
-                    <p>{{ libros.count }} libros encontrados</p>
-                    <ul>
-                        {% for libro in libros %}
-                        <li>{{ libro }}</li>
-                        {% endfor %}
-                    </ul>
                 </div>
             </div>
         </div>

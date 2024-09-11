@@ -6,8 +6,6 @@ from .models import (
     Configuracion, Libro, Autor, Genero, Socio, Bibliotecario, Prestamo, LibroAutor, Ejemplar, PrestamoPendiente)
 
 
-admin.site.register(Ejemplar)
-
 @admin.register(Configuracion)
 class ConfiguracionAdmin(SingletonModelAdmin):
     # Configuracion.load()
@@ -19,10 +17,17 @@ class LibroAutorInline(admin.StackedInline):
     extra = 0
 
 
+class EjemplarInline(admin.StackedInline):
+    model = Ejemplar
+    extra = 0
+
+
 @admin.register(Libro)
 class LibroAdmin(admin.ModelAdmin):
-    # filter_horizontal = ('autores',)
-    inlines = [LibroAutorInline]
+    from .forms import LibroForm
+
+    form = LibroForm
+    inlines = [LibroAutorInline, EjemplarInline]
 
 
 @admin.register(Autor)

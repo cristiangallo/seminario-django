@@ -61,7 +61,7 @@
                                             <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                                                 {% csrf_token %}
                                             </form>
-                                            <a href="" onclick="document.getElementById('logout-form').submit();">
+                                            <a href="" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 Cerrar sesión
                                             </a>
                                         </li>

@@ -1,6 +1,4 @@
 Obtener URLs del Admin:
-
-
 from django.urls import reverse
 reverse('admin:posts_post_change', args=(post.id,))
 
@@ -39,5 +37,6 @@ def get_class_name(obj):
 
 Buscador de libros
 
+https://sorl-thumbnail.readthedocs.io/en/latest/
 agregar Imagen portada libro al modelo
 

@@ -1,6 +1,7 @@
 asgiref==3.8.1
 Django==5.1.1
 django-autocomplete-light==3.11.0
+phonenumbers==8.13.45
 pillow==10.4.0
 sorl-thumbnail==12.10.0
 sqlparse==0.5.1

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
-from venv import create
 
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -38,21 +38,29 @@ class Genero(models.Model):
 
 
 class Libro(models.Model):
+    """
+    Los libros se identifican mediante su ISBN, tienen un título, cantidad de páginas, uno o más autores y
+    pertenecen a un género literario.
+    """
     from sorl.thumbnail import ImageField as SorlImageField
-    # Los libros se identifican mediante su ISBN, tienen un título, cantidad de páginas, uno o más autores y pertenecen
-    # a un género literario.
+
+    def validate_isbn13(value):
+        """Valida que el ISBN tenga exactamente 13 dígitos """
+        if len(value) != 13 or not value.isdigit():
+            raise ValidationError(f'El ISBN debe contener exactamente 13 dígitos. "{value}" no es válido.')
+
+    isbn = models.CharField(max_length=13, primary_key=True, validators=[validate_isbn13])
     titulo = models.CharField(max_length=70, verbose_name="Título")
     cant_pag = models.IntegerField(default=0, verbose_name="Cant. de páginas")
     cant_ej = models.IntegerField(default=0, verbose_name="Cant. de ejemplares", editable=True)
     remanente = models.IntegerField(default=0, verbose_name="Ejemplares a disposición", editable=True)
     genero = models.ForeignKey(Genero, on_delete=models.PROTECT, verbose_name="Género")
-    autores = models.ManyToManyField(Autor, verbose_name="Autores", through='LibroAutor')
+    # autores = models.ManyToManyField(Autor, verbose_name="Autores", through='LibroAutor')
     portada = SorlImageField(max_length=255, null=True, blank=True, upload_to='libros/%Y')
 
     def __str__(self):
         return self.titulo
 
-    @property
     def isbn(self):
         isbn = str(self.id)
         return "-".join([isbn[0:3], isbn[3:4], isbn[4:6], isbn[6:12], isbn[12]])
@@ -71,7 +79,7 @@ class LibroAutor(models.Model):
 
 class Ejemplar(models.Model):
     libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
-    nro_ejemplar = models.IntegerField(default=1)
+    nro_ejemplar = models.IntegerField()
 
     class Meta:
         unique_together = ('libro', 'nro_ejemplar')
@@ -79,6 +87,13 @@ class Ejemplar(models.Model):
 
     def __str__(self):
         return "{}-{}".format(self.nro_ejemplar, self.libro)
+
+    def save(self, *args, **kwargs):
+        from django.db.models import Max
+        if not self.pk:
+            self.nro_ejemplar = self.libro.ejemplar_set.aggregate(
+                Max("nro_ejemplar", default=0))['nro_ejemplar__max'] + 1
+        super().save(*args, **kwargs)
 
 
 from django.db.models.signals import post_save, post_delete
