@@ -55,7 +55,7 @@ class Libro(models.Model):
     cant_ej = models.IntegerField(default=0, verbose_name="Cant. de ejemplares", editable=True)
     remanente = models.IntegerField(default=0, verbose_name="Ejemplares a disposición", editable=True)
     genero = models.ForeignKey(Genero, on_delete=models.PROTECT, verbose_name="Género")
-    # autores = models.ManyToManyField(Autor, verbose_name="Autores", through='LibroAutor')
+    autores = models.ManyToManyField(Autor, verbose_name="Autores", through='LibroAutor')
     portada = SorlImageField(max_length=255, null=True, blank=True, upload_to='libros/%Y')
 
     def __str__(self):
