@@ -26,3 +26,6 @@ def login_view(request, next_page="/"):
             return HttpResponse('Credenciales inválidas')
 
     return render(request, 'app/login_register.html')
+
+luego en la home:
+mensaje_bienvenida = request.session.get('bienvenida', 'Anónimo')
