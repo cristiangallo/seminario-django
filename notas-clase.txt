@@ -1,0 +1,28 @@
+sessiones
+
+{{ request.session.bienvenida }}
+
+# Login utilizando vista basada en funciones
+    path('login', login_view, {'next_page': "/"}, name='login'),
+
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
+
+
+def login_view(request, next_page="/"):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)            # acá se inicia sesión y se crea la sesión
+            # Guardamos datos adicionales en la sesión recién creada
+            request.session['bienvenida'] = f'Bienvenido, {user.username}'
+            return redirect(next_page)
+        else:
+            return HttpResponse('Credenciales inválidas')
+
+    return render(request, 'app/login_register.html')
