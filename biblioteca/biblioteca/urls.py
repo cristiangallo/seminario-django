@@ -22,9 +22,7 @@ from django.contrib.auth.views import (
     LogoutView, LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordChangeDoneView,
     PasswordResetCompleteView, PasswordChangeView)
 from django.views.generic import TemplateView
-from app.views import buscador
-
-from app.views import home
+from app.views import buscador, home
 urlpatterns = [
     path('admin/', admin.site.urls),
 
