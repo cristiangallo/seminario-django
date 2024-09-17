@@ -21,7 +21,7 @@ def mensaje_busqueda(objetos):
     if cantidad > 0:
         return mark_safe('<div class="alert alert-success" role="alert"><strong>{}</strong> {} {}.</div>'.format(
             cantidad,
-            objeto.__class__._meta.verbose_name_plural if cantidad > 1 else objeto.__class__.__meta.verbose_name,
+            objeto.__class__._meta.verbose_name_plural if cantidad > 1 else objeto.__class__._meta.verbose_name,
             'encontrados' if cantidad > 1 else 'encontrado'))
 
     return mark_safe(
