@@ -1,0 +1,39 @@
+{% load static thumbnail %}
+<table class="table table-striped table-border checkout-table">
+                                <tbody>
+                                    <tr>
+                                        <th class="hidden-xs"></th>
+                                        <th>ISBN</th>
+                                        <th>Título</th>
+                                        <th class="hidden-xs">Género</th>
+                                        <th>Ejemplares disponibles</th>
+                                        {#                                        <th></th>#}
+                                    </tr>
+                                    {% for objeto in objetos %}
+                                        <tr>
+                                            <td class="">
+                                                <a href="#">
+                                                    {% thumbnail objeto.portada "665x750" format="PNG" crop="center" as img %}
+                                                        <img src="{{ img.url }}">
+                                                    {% empty %}
+                                                        <img src="{% static 'assets/images/portada_libro.jpg' %}" alt="portada libro genérico"/>
+                                                    {% endthumbnail %}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <h5 class="product-title font-alt">{{ objeto.isbn }}</h5>
+                                            </td>
+                                            <td class="hidden-xs">
+                                                <h5 class="product-title font-alt">{{ objeto }}</h5>
+                                            </td>
+                                            <td>
+                                                <h5 class="product-title font-alt">{{ objeto.genero }}</h5>
+                                            </td>
+                                            <td>
+                                                <h5 class="product-title font-alt">{{ objeto.remanente }}</h5>
+                                            </td>
+                                            {#  <td class="pr-remove"><a href="#" title="Remove"><i class="fa fa-times"></i></a></td>#}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>

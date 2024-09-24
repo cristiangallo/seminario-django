@@ -32,7 +32,7 @@ urlpatterns = [
 
     path('base', TemplateView.as_view(template_name="app/base.html"), name='base'),
 
-    path('buscador', buscador, name='buscador'),
+    # path('buscador', buscador, name='buscador'),
 
     path('libros-prestados', buscador, name='libros-prestados'),
     #

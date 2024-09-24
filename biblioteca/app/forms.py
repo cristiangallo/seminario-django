@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Socio, Libro
+from .models import Socio, Libro, Prestamo
 
 
 class SocioForm(forms.ModelForm):
@@ -62,6 +62,21 @@ class BuscadorForm(forms.Form):
         resultado_busqueda = Libro.objects.filter(titulo__icontains=texto)
 
         return resultado_busqueda
+
+    def buscar(self):
+        texto = self.cleaned_data.get("libro")
+        nro_doc_socio = self.cleaned_data.get("nro_doc_socio")
+        if not texto and not nro_doc_socio:
+            return Libro.objects.none()
+
+        if not nro_doc_socio:
+            return Libro.objects.filter(titulo__icontains=texto)
+
+        prestamos = Prestamo.objects.filter(socio__dni__icontains=nro_doc_socio)
+        if texto:
+            prestamos = prestamos.filter(ejemplar__libro__titulo__icontains=texto)
+
+        return prestamos.order_by("fecha_dev")
 
 
 class LibroForm(forms.ModelForm):

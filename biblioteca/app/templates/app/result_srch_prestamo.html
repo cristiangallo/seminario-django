@@ -1,0 +1,39 @@
+{% load static thumbnail %}
+<table class="table table-striped table-border checkout-table">
+    <tbody>
+        <tr>
+            <th class="hidden-xs"></th>
+            <th>Socio</th>
+            <th>Título</th>
+            <th class="hidden-xs">Fec. Lím. Dev.</th>
+            <th class="hidden-xs">Fec. Devol.</th>
+            <th>Devolver</th>
+        </tr>
+        {% for prestamo in objetos %}
+            <tr>
+                <td class="">
+                    <a href="#">
+                        {% thumbnail prestamo.ejemplar.libro.portada "665x750" format="PNG" crop="center" as img %}
+                            <img src="{{ img.url }}">
+                        {% empty %}
+                            <img src="{% static 'assets/images/portada_libro.jpg' %}" alt="portada libro genérico"/>
+                        {% endthumbnail %}
+                    </a>
+                </td>
+                <td>
+                    <h5 class="product-title font-alt">{{ prestamo.socio|truncatechars:20 }}</h5>
+                </td>
+                <td class="hidden-xs">
+                    <h5 class="product-title font-alt">{{ prestamo.ejemplar.libro }}</h5>
+                </td>
+                <td>
+                    <h5 class="product-title font-alt">{{ prestamo.fecha_max_dev }}</h5>
+                </td>
+                <td>
+                    <h5 class="product-title font-alt"> {{ prestamo.fecha_dev }}</h5>
+                </td>
+                <td class="pr-remove">{% if not prestamo.fecha_dev and prestamo.fecha_max_dev|date:"Y-m-d" > now|date:"Y-m-d" %}<a href="#" title="Devolver"><i class="fa fa-exclamation-triangle"></i></a>{% elif not prestamo.fecha_dev %}<a href="#" title="Devolver"><i class="fa fa-retweet"></i></a>{% endif %}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-sm-3">
                     <h4 class="font-alt">Buscador de ...</h4><br/>
-                    <form id="buscadorLibros" role="form" method="post" action="{% url 'buscador' %}">
+                    <form role="form" method="post" action="">
                         {% csrf_token %}
                         <div class="form-group">
                             <label class="sr-only" for="libro">Nombre del libro</label>
@@ -25,49 +25,16 @@
                     <div class="ajax-response font-alt" id="contactFormResponse"></div>
                 </div>
                 <div class="col-sm-9">
-                    {{ libros|mensaje_busqueda }}
+                    {{ objetos|mensaje_busqueda }}
                     <h4 class="font-alt">Resultado de búsqueda</h4>
                     <hr/>
                     <div class="row">
                         <div class="col-sm-12">
-                            <table class="table table-striped table-border checkout-table">
-                                <tbody>
-                                    <tr>
-                                        <th class="hidden-xs"></th>
-                                        <th>ISBN</th>
-                                        <th>Título</th>
-                                        <th class="hidden-xs">Género</th>
-                                        <th>Ejemplares disponibles</th>
-                                        {#                                        <th></th>#}
-                                    </tr>
-                                    {% for libro in libros %}
-                                        <tr>
-                                            <td class="">
-                                                <a href="#">
-                                                    {% thumbnail libro.portada "665x750" format="PNG" crop="center" as img %}
-                                                        <img src="{{ img.url }}">
-                                                    {% empty %}
-                                                        <img src="{% static 'assets/images/portada_libro.jpg' %}" alt="portada libro genérico"/>
-                                                    {% endthumbnail %}
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <h5 class="product-title font-alt">{{ libro.isbn }}</h5>
-                                            </td>
-                                            <td class="hidden-xs">
-                                                <h5 class="product-title font-alt">{{ libro }}</h5>
-                                            </td>
-                                            <td>
-                                                <h5 class="product-title font-alt">{{ libro.genero }}</h5>
-                                            </td>
-                                            <td>
-                                                <h5 class="product-title font-alt">{{ libro.remanente }}</h5>
-                                            </td>
-                                            {#  <td class="pr-remove"><a href="#" title="Remove"><i class="fa fa-times"></i></a></td>#}
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            {% if objetos.first|tipo_objeto == 'Libro' %}
+                            {% include "app/result_srch_libro.html" %}
+                            {% else %}
+                            {% include "app/result_srch_prestamo.html" %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>
