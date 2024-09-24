@@ -1,8 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
-from app.models import Socio, Libro
-
+from app.models import Socio, Libro, Prestamo
 
 
 def login_view(request, next_page="/"):
@@ -58,5 +57,17 @@ def buscador(request):
     else:
         form = BuscadorForm(request.GET)
     args.update({'form': form})
+
+    return render(request, "app/index.html", args)
+
+
+def libros_prestados(request):
+    from .models import Prestamo
+    from .forms import BuscadorForm
+
+    args = {
+        'objetos': Prestamo.objects.filter(fecha_dev__isnull=True),
+        'form': BuscadorForm(request.GET)}
+
 
     return render(request, "app/index.html", args)
