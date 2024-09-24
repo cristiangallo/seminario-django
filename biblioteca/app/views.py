@@ -4,6 +4,34 @@ from django.shortcuts import render
 from app.models import Socio, Libro
 
 
+
+def login_view(request, next_page="/"):
+    from django.contrib.auth import authenticate
+    from django.contrib.auth import login
+    from django.http import HttpResponseRedirect, HttpResponse
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            request.session['bienvenida'] = f"Bienvenido, {user.username}"
+            return HttpResponseRedirect(next_page)
+        else:
+
+            return HttpResponse("Credenciales inválidas!")
+
+
+    return render(request, "app/login_register.html")
+
+
+
+
+
+
+
+
 @login_required(login_url="login")
 def home(request):
     args = {}

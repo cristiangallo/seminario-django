@@ -40,19 +40,21 @@ class SocioForm(forms.ModelForm):
 
 class BuscadorForm(forms.Form):
     libro = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': "Nombre del libro*",
-                'required': "required",
+                'placeholder': "Nombre del libro",
+                # 'required': "required",
                 # 'data-validation-required-message': "Please enter your name."
             }))
     nro_doc_socio = forms.CharField(
+        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': "DNI socio*",
-                'required': "required",
+                'placeholder': "DNI socio",
+                # 'required': "required",
                 # 'data-validation-required-message': "Please enter your name."
             }))
 
