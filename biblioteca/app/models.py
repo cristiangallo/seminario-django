@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from django.db import models
@@ -64,6 +65,20 @@ class Libro(models.Model):
     def isbn(self):
         isbn = str(self.id)
         return "-".join([isbn[0:3], isbn[3:4], isbn[4:6], isbn[6:12], isbn[12]])
+
+    def thumb_libro(self):
+        from django.utils.safestring import mark_safe
+        from sorl.thumbnail import get_thumbnail
+        try:
+            from django.urls import reverse
+            return mark_safe(
+                f'<a href=\"{reverse("admin:app_libro_change", args=[self.pk])}\" target="_blank">'
+                f'<img src="{get_thumbnail(self.portada, "100", crop="center", quality=95).url}" /></a>')
+        except:
+            pass
+        return ""
+    thumb_libro.short_description = "Portada"
+
 
 
 class LibroAutor(models.Model):

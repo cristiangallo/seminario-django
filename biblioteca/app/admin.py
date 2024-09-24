@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 
+from sorl.thumbnail.admin import AdminImageMixin
 from django.contrib import admin
 from singleton.admin import SingletonModelAdmin
 from .models import (
@@ -23,8 +24,10 @@ class EjemplarInline(admin.StackedInline):
 
 
 @admin.register(Libro)
-class LibroAdmin(admin.ModelAdmin):
+class LibroAdmin(AdminImageMixin, admin.ModelAdmin):
     from .forms import LibroForm
+
+    list_display = ["isbn", "__str__", "thumb_libro"]
 
     form = LibroForm
     inlines = [LibroAutorInline, EjemplarInline]

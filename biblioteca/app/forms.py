@@ -44,8 +44,8 @@ class BuscadorForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': "Nombre del libro*",
-                'required': "required",
+                'placeholder': "Nombre del libro",
+                # 'required': "required",
                 # 'data-validation-required-message': "Please enter your name."
             }))
     nro_doc_socio = forms.CharField(
@@ -53,8 +53,8 @@ class BuscadorForm(forms.Form):
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': "DNI socio*",
-                'required': "required",
+                'placeholder': "DNI socio",
+                # 'required': "required",
                 # 'data-validation-required-message': "Please enter your name."
             }))
 
@@ -69,7 +69,8 @@ class BuscadorForm(forms.Form):
         texto = self.cleaned_data.get("libro")
         nro_doc_socio = self.cleaned_data.get("nro_doc_socio")
         if not texto and not nro_doc_socio:
-            return Libro.objects.none()
+            # return Libro.objects.none()
+            return Libro.objects.all()
 
         if not nro_doc_socio:
             return Libro.objects.filter(titulo__icontains=texto)
