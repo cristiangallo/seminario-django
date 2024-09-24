@@ -63,8 +63,11 @@ class Libro(models.Model):
         return self.titulo
 
     def isbn(self):
-        isbn = str(self.id)
-        return "-".join([isbn[0:3], isbn[3:4], isbn[4:6], isbn[6:12], isbn[12]])
+        try:
+            isbn = str(self.id)
+            return "-".join([isbn[0:3], isbn[3:4], isbn[4:6], isbn[6:12], isbn[12]])
+        except:
+            return "completar ISBN"
 
     def thumb_libro(self):
         from django.utils.safestring import mark_safe

@@ -40,21 +40,19 @@ class SocioForm(forms.ModelForm):
 
 class BuscadorForm(forms.Form):
     libro = forms.CharField(
-        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': "Nombre del libro",
-                # 'required': "required",
+                'placeholder': "Nombre del libro*",
+                'required': "required",
                 # 'data-validation-required-message': "Please enter your name."
             }))
     nro_doc_socio = forms.CharField(
-        required=False,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
-                'placeholder': "DNI socio",
-                # 'required': "required",
+                'placeholder': "DNI socio*",
+                'required': "required",
                 # 'data-validation-required-message': "Please enter your name."
             }))
 
@@ -94,7 +92,7 @@ class LibroForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         instance = kwargs.get('instance', None)
         super(LibroForm, self).__init__(*args, **kwargs)
-        if instance.pk:
+        if instance and instance.pk:
             self.fields['ISBN'] = forms.CharField(
                 initial=instance.isbn(), required=False, label='ISBN', widget=forms.TextInput(
                     attrs={'class': 'form-control', 'readonly': 'readonly'}))
