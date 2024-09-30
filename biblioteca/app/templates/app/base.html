@@ -51,7 +51,7 @@
                         <ul class="nav navbar-nav navbar-right">
                             <li><a href="{% url 'home' %}#totop">Home</a></li>
                             <li><a href="{% url 'libros-prestados' %}">Libros Prestados</a></li>
-                            <li><a href="/#totop">Prestar Libro</a></li>
+                            <li><a href="{% url 'prestar-ejemplar' %}">Prestar Libro</a></li>
                             {% if user.is_authenticated %}
                                 <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">{{ request.session.bienvenida }}</a>
                                     <ul class="dropdown-menu">

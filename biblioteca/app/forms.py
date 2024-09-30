@@ -3,6 +3,21 @@ from django import forms
 from .models import Socio, Libro, Prestamo
 
 
+class PrestamoForm(forms.ModelForm):
+    class Meta:
+        model = Prestamo
+        fields = '__all__'
+        widgets = {
+            'socio': forms.Select(attrs={'class': 'form-control'}),
+            'ejemplar': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PrestamoForm, self).__init__(*args, **kwargs)
+
+
+
+
 class SocioForm(forms.ModelForm):
     class Meta:
         model = Socio

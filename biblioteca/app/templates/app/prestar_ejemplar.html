@@ -1,0 +1,31 @@
+{% extends 'app/index.html' %}
+
+{% block prestamos %}
+    {% for message in messages %}
+        <div class="alert {{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+    <h4 class="font-alt">Préstamo de ejemplar</h4>
+    <hr/>
+    <div class="row">
+        <div class="col-sm-12">
+            <form class="form" method="POST">{% csrf_token %}
+                {{ form_prestamo.entrego }}
+                {{ form_prestamo.errors }}
+                {{ form_prestamo.non_field_errors }}
+                <div class="form-group">
+                    {{ form_prestamo.socio}}
+                </div>
+                <div class="form-group">
+                    {{ form_prestamo.ejemplar }}
+                </div>
+
+                <div class="form-group">
+                    <button class="btn btn-block btn-round btn-b">Prestar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
