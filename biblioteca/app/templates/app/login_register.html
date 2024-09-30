@@ -17,6 +17,11 @@
                 <h4 class="font-alt">Login</h4>
                 <hr class="divider-w mb-10">
                 <form class="form" action="{% url 'login' %}" method="post">
+                    {% for message in messages %}
+                        <div class="alert {{ message.tags }}" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
                     {{ form.errors }}
                     {{ form.non_field_errors }}
                     {% csrf_token %}

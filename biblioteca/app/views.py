@@ -5,6 +5,7 @@ from app.models import Socio, Libro, Prestamo
 
 
 def login_view(request, next_page="/"):
+    from django.contrib import messages
     from django.contrib.auth import authenticate
     from django.contrib.auth import login
     from django.http import HttpResponseRedirect, HttpResponse
@@ -18,17 +19,8 @@ def login_view(request, next_page="/"):
             request.session['bienvenida'] = f"Bienvenido, {user.username}"
             return HttpResponseRedirect(next_page)
         else:
-
-            return HttpResponse("Credenciales inválidas!")
-
-
+            messages.add_message(request, messages.ERROR, "¡Credenciales inválidas! El usuario y/o la contraseña no coinciden.")
     return render(request, "app/login_register.html")
-
-
-
-
-
-
 
 
 @login_required(login_url="login")
