@@ -1,6 +1,6 @@
-
+from datetime import date
 from django import forms
-from .models import Socio, Libro, Prestamo, Ejemplar
+from .models import Socio, Libro, Prestamo, Ejemplar, Configuracion
 
 
 class PrestamoForm(forms.ModelForm):
@@ -19,9 +19,15 @@ class PrestamoForm(forms.ModelForm):
         self.fields['ejemplar'].queryset = Ejemplar.objects.filter(
             Q(prestamo__isnull=True) | Q(prestamo__fecha_dev__isnull=False))
 
-    def clean(self):
-        raise forms.ValidationError("ñlkñkñl")
-
+    def clean_socio(self):
+        socio = self.cleaned_data.get('socio')
+        no_devueltos = socio.prestamo_set.filter(fecha_dev__isnull=True).count()
+        if no_devueltos >= Configuracion.load().cant_max_prest_act:
+            raise forms.ValidationError(f"El socio tiene {no_devueltos} prestados.")
+        prestamos_vencidos = socio.prestamo_set.filter(fecha_dev__isnull=True, fecha_max_dev__lt=date.today())
+        if prestamos_vencidos.exists():
+            raise forms.ValidationError(f"El socio tiene préstados vencidos.")
+        return socio
 
 class SocioForm(forms.ModelForm):
     class Meta:
