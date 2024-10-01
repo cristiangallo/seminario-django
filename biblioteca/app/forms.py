@@ -19,6 +19,9 @@ class PrestamoForm(forms.ModelForm):
         self.fields['ejemplar'].queryset = Ejemplar.objects.filter(
             Q(prestamo__isnull=True) | Q(prestamo__fecha_dev__isnull=False))
 
+    def clean(self):
+        raise forms.ValidationError("ñlkñkñl")
+
 
 class SocioForm(forms.ModelForm):
     class Meta:
