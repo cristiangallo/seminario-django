@@ -13,6 +13,7 @@
             <form class="form" method="POST">{% csrf_token %}
                 {{ form_prestamo.entrego }}
                 {{ form_prestamo.errors }}
+                {% if form_prestamo.errors %}<p class="help-block text-danger">{{ form_prestamo.errors }}</p>{% endif %}
                 {{ form_prestamo.non_field_errors }}
                 <div class="form-group">
                     {{ form_prestamo.socio}}

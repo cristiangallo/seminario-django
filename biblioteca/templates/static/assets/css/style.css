@@ -826,6 +826,10 @@ a,
   border-color: #CACACA;
 }
 
+.text-danger {
+    color: #e43333;
+}
+
 /* Forms size */
 .input-lg,
 .form-horizontal .form-group-lg .form-control {

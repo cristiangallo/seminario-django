@@ -1,6 +1,6 @@
 
 from django import forms
-from .models import Socio, Libro, Prestamo
+from .models import Socio, Libro, Prestamo, Ejemplar
 
 
 class PrestamoForm(forms.ModelForm):
@@ -13,9 +13,11 @@ class PrestamoForm(forms.ModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        from django.db.models import Q
+
         super(PrestamoForm, self).__init__(*args, **kwargs)
-
-
+        self.fields['ejemplar'].queryset = Ejemplar.objects.filter(
+            Q(prestamo__isnull=True) | Q(prestamo__fecha_dev__isnull=False))
 
 
 class SocioForm(forms.ModelForm):

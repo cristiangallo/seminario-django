@@ -55,7 +55,7 @@
                             {% if user.is_authenticated %}
                                 <li class="dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown">{{ request.session.bienvenida }}</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="{% url 'admin:index' %}">Administrador</a></li>
+                                        <li><a href="{% url 'admin:index' %}" target="_blank">Administrador</a></li>
                                         <li>
                                             <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
                                                 {% csrf_token %}

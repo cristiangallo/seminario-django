@@ -12,7 +12,7 @@
                                     {% for objeto in objetos %}
                                         <tr>
                                             <td class="">
-                                                <a href="#">
+                                                <a href="{% url 'admin:app_libro_change' objeto.id %}">
                                                     {% thumbnail objeto.portada "665x750" format="PNG" crop="center" as img %}
                                                         <img src="{{ img.url }}">
                                                     {% empty %}
