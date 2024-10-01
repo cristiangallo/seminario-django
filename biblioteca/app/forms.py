@@ -1,6 +1,39 @@
 
+from datetime import date
 from django import forms
-from .models import Socio, Libro, Prestamo
+from .models import Socio, Libro, Prestamo, Ejemplar, Configuracion
+
+
+class PrestamoForm(forms.ModelForm):
+    class Meta:
+        model = Prestamo
+        fields = '__all__'
+        widgets = {
+            'entrego': forms.HiddenInput(),
+            'socio': forms.Select(attrs={'class': 'form-control'}),
+            'ejemplar': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PrestamoForm, self).__init__(*args, **kwargs)
+        from django.db.models import Q
+        self.fields['ejemplar'].queryset = Ejemplar.objects.filter(
+            Q(prestamo__isnull=True) | Q(prestamo__fecha_dev__isnull=False)
+        )
+
+    def clean_socio(self):
+        socio = self.cleaned_data.get('socio')
+        prestamos_mora = socio.prestamo_set.filter(
+            fecha_dev__isnull=True, fecha_max_dev__lt=date.today()
+        )
+        prestamos_sin_devolver = socio.prestamo_set.filter(fecha_dev__isnull=True)
+        if prestamos_sin_devolver.count() > Configuracion.load().cant_max_prest_act:
+            raise forms.ValidationError(f"El socio tiene {prestamos_sin_devolver.count()} ejemplares sin devolver.")
+
+        if prestamos_mora.exists():
+            raise forms.ValidationError(f"El socio tiene {prestamos_mora.count()} ejemplares en mora!.")
+
+        return socio
 
 
 class SocioForm(forms.ModelForm):

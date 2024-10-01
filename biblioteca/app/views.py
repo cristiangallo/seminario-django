@@ -4,6 +4,23 @@ from django.shortcuts import render
 from app.models import Socio, Libro, Prestamo
 
 
+def prestar_libro(request):
+    from .forms import BuscadorForm, PrestamoForm
+
+    if request.method == "POST":
+        form_prestamo = PrestamoForm(request.POST)
+        if form_prestamo.is_valid():
+            prestamo = form_prestamo.save()
+
+
+    else:
+        form_prestamo = PrestamoForm(
+            initial={'entrego': request.user.bibliotecario})
+
+    args = {"form": BuscadorForm(), 'form_prestamo': form_prestamo}
+    return render(request, "app/prestar-libro.html", args)
+
+
 def login_view(request, next_page="/"):
     from django.contrib import messages
     from django.contrib.auth import authenticate

@@ -22,7 +22,7 @@ from django.contrib.auth.views import (
     LogoutView, LoginView, PasswordResetView, PasswordResetConfirmView, PasswordResetDoneView, PasswordChangeDoneView,
     PasswordResetCompleteView, PasswordChangeView)
 from django.views.generic import TemplateView
-from app.views import buscador, home, login_view, libros_prestados
+from app.views import buscador, home, login_view, libros_prestados, prestar_libro
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,6 +34,8 @@ urlpatterns = [
     # path('buscador', buscador, name='buscador'),
 
     path('libros-prestados', libros_prestados, name='libros-prestados'),
+
+    path('prestar-libro', prestar_libro, name='prestar-libro'),
 
     # path('login', LoginView.as_view(template_name="app/login_register.html", next_page="/"), name='login'),
 
