@@ -32,7 +32,10 @@
                 <td>
                     <h5 class="product-title font-alt"> {{ prestamo.fecha_dev }}</h5>
                 </td>
-                <td class="pr-remove">{% if not prestamo.fecha_dev and prestamo.fecha_max_dev|date:"Y-m-d" > now|date:"Y-m-d" %}<a href="#" title="Devolver"><i class="fa fa-exclamation-triangle"></i></a>{% elif not prestamo.fecha_dev %}<a href="#" title="Devolver"><i class="fa fa-retweet"></i></a>{% endif %}</td>
+                <td class="pr-remove">{% if not prestamo.fecha_dev and prestamo.fecha_max_dev|date:"Y-m-d" > now|date:"Y-m-d" %}
+                    <a href="{% url 'devolver-ejemplar' prestamo.id  %}" title="Devolver"><i class="fa fa-exclamation-triangle"></i></a>
+                {% elif not prestamo.fecha_dev %}<a href="#" title="Devolver"><i class="fa fa-retweet"></i></a>
+                {% endif %}</td>
             </tr>
         {% endfor %}
     </tbody>

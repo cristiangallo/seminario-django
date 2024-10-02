@@ -1,7 +1,26 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
+from datetime import date
 from app.models import Socio, Libro, Prestamo
+
+
+def devolver_libro(request, id_prestamo):
+    from .forms import BuscadorForm, DevolucionForm
+
+    prestamo = Prestamo.objects.get(id=id_prestamo)
+    if request.method == 'POST':
+        form_prestamo = DevolucionForm(request.POST)
+        if form_prestamo.is_valid():
+            prestamo = form_prestamo.save()
+    else:
+        form_prestamo = DevolucionForm(instance=prestamo, initial={'recibio': request.user.bibliotecario})
+
+    alerta = True if prestamo.fecha_max_dev < date.today() else False
+
+    args = {"form": BuscadorForm(), 'form_prestamo': form_prestamo, 'alerta': alerta, 'prestamo': prestamo}
+
+
+    return render(request, "app/devolver-libro.html", args)
 
 
 def prestar_libro(request):

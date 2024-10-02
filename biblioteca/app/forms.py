@@ -4,6 +4,23 @@ from django import forms
 from .models import Socio, Libro, Prestamo, Ejemplar, Configuracion
 
 
+class DevolucionForm(forms.ModelForm):
+    class Meta:
+        model = Prestamo
+        fields = '__all__'
+        widgets = {
+            'recibio': forms.HiddenInput(),
+            'socio': forms.Select(attrs={'class': 'form-control'}),
+            'ejemplar': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+    def save(self, commit=True):
+        recibio = self.cleaned_data.get('recibio')
+        self.instance.recibio = recibio
+        self.instance.fecha_dev = date.today()
+        self.instance.save()
+
+
 class PrestamoForm(forms.ModelForm):
     class Meta:
         model = Prestamo

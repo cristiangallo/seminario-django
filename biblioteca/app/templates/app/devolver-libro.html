@@ -1,0 +1,33 @@
+{% extends "app/index.html" %}
+
+{% block prestamos %}
+    <div class="col-sm-9">
+        <h4 class="font-alt">Devolución de ejemplar</h4>
+        <hr/>
+        <div class="row">
+            <div class="col-sm-12">
+                <form action="" method="post">
+                    {% csrf_token %}
+                {{alerta }}
+                    {% if alerta %}EL ejemplar se tendrìa que haber devuelto el {{ prestamo.fecha_max_dev }} {% endif %}
+                    {{ form_prestamo.non_field_errors }}
+                    {{ form_prestamo.recibio }}
+                    <div class="form-group">
+                        <label class="sr-only" for="libro">Socio</label>
+                        {{ form_prestamo.socio }}
+                        {% if form_prestamo.socio %}
+                            <p class="help-block text-danger">{{ form_prestamo.socio.errors|striptags }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="libro">Ejemplar</label>
+                        {{ form_prestamo.ejemplar }}
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-block btn-round btn-d" id="cfsubmit" type="submit">Recibir ejemplar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
