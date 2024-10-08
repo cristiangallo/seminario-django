@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-qf2szwfocelsk98pp+cwidob%mf42pod__&a8p46@e00jdtofl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["biblio.cristiangallo.ar", "localhost"]
 
 
 # Application definition
